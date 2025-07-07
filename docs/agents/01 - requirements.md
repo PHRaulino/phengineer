@@ -20,6 +20,8 @@ Analise a solicitação do usuário e o contexto do projeto para gerar uma espec
 - Seja específico nos caminhos de arquivos
 - Defina testes adequados para cada funcionalidade
 - Classifique complexidade: low, medium, high
+- **IMPORTANTE**: Retorne APENAS o JSON estruturado, sem explicações adicionais
+- **COMUNICAÇÃO**: Use apenas o campo "agent_feedback" para sugestões, avisos ou solicitações ao usuário
 
 **Contexto do projeto:**
 {project_context}
@@ -58,7 +60,12 @@ Analise a solicitação do usuário e o contexto do projeto para gerar uma espec
   ],
   "complexity": "low|medium|high",
   "dor": ["string"],
-  "dod": ["string"]
+  "dod": ["string"],
+  "agent_feedback": {
+    "suggestions": ["string"],
+    "warnings": ["string"],
+    "missing_info": ["string"]
+  }
 }
 ```
 
@@ -121,4 +128,4 @@ tests/
 
 ### Configurações:
 - `configs/project.yaml` - padrões arquiteturais
-- `configs/agents.yaml` - templates de geração`
+- `configs/agents.yaml` - templates de geração
