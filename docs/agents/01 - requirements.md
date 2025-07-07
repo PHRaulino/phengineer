@@ -20,7 +20,7 @@ Analise a solicitação do usuário e o contexto do projeto para gerar uma espec
 - Seja específico nos caminhos de arquivos
 - Defina testes adequados para cada funcionalidade
 - Classifique complexidade: low, medium, high
-- **IMPORTANTE**: Retorne APENAS o JSON estruturado, sem explicações adicionais
+- **IMPORTANTE**: Retorne APENAS o JSON válido puro, sem blocos de código (```json), sem explicações, sem formatação markdown. Apenas o objeto JSON limpo.
 - **COMUNICAÇÃO**: Use apenas o campo "agent_feedback" para sugestões, avisos ou solicitações ao usuário
 
 **Contexto do projeto:**
