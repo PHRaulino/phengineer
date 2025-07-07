@@ -1,0 +1,38 @@
+{
+  "generation_type": "feature",
+  "summary": "Endpoint para criação de usuários com validação",
+  "architecture": {
+    "pattern": "Clean Architecture",
+    "framework": "Gin",
+    "database": "PostgreSQL"
+  },
+  "files_changes": [
+    {
+      "file_path": "internal/handlers/user_handler.go",
+      "change": "Handler POST /users com validação de email",
+      "type": "new_file"
+    }
+  ],
+  "tests": [
+    {
+      "type": "unit",
+      "description": "Testes do service layer"
+    }
+  ],
+  "complexity": "medium",
+  "dor": [
+    "Especificação aprovada pelo solicitante",
+    "Arquitetura definida (Clean Architecture + Gin)",
+    "Estrutura de arquivos mapeada",
+    "Dependências identificadas (bcrypt, PostgreSQL)"
+  ],
+  "dod": [
+    "Código implementado seguindo Clean Architecture",
+    "Testes unitários com >80% cobertura",
+    "Testes de integração funcionais",
+    "Validação de email único implementada",
+    "Hash de senha com bcrypt",
+    "Documentação técnica atualizada",
+    "Pull Request criado e pronto para review"
+  ]
+}
