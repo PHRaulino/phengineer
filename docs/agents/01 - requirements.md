@@ -15,11 +15,15 @@ Analise a solicitação do usuário e o contexto do projeto para gerar uma espec
 5. Retornar JSON estruturado
 
 **Diretrizes:**
-- Use Clean Architecture como padrão base
+- Use Clean Architecture como padrão base quando aplicável
 - Identifique o tipo de geração: feature, test, fix, doc, refactor
 - Seja específico nos caminhos de arquivos
 - Defina testes adequados para cada funcionalidade
 - Classifique complexidade: low, medium, high
+- **ARQUITETURA**: Adapte-se ao contexto do projeto (serverless, monolito, microserviços)
+- **STACK**: Inclua frameworks, linguagens, serviços cloud relevantes
+- **PADRÕES**: Aplique design patterns e princípios arquiteturais apropriados
+- **ARQUIVOS RELEVANTES**: Para cada mudança de arquivo, identifique arquivos relacionados que podem ser necessários como contexto (imports, interfaces, tipos, dependências)
 - **COMUNICAÇÃO**: Use apenas o campo "agent_feedback" para sugestões, avisos ou solicitações ao usuário
 
 **Contexto do projeto:**
@@ -40,7 +44,6 @@ Analise a solicitação e gere a especificação técnica estruturada.
 ## 📁 Informações Necessárias do Orquestrador
 
 ### 1. **project_context**
-
 ```json
 {
   "name": "user-api",
@@ -54,7 +57,6 @@ Analise a solicitação e gere a especificação técnica estruturada.
 ```
 
 ### 2. **project_structure**
-
 ```
 internal/
 ├── domain/
@@ -73,31 +75,26 @@ tests/
 ```
 
 ### 3. **user_request**
-
 - Texto original da Issue
 
 ### 4. **user_corrections**
-
 - Conteúdo da seção "Correções/Alterações" da Issue
 - `null` se não houver correções
 
 ## 🔧 Coleta de Informações pelo Orquestrador
 
 ### Arquivos de Contexto:
-
 - `go.mod` - dependências e versão Go
 - `internal/` - estrutura de pastas existente
 - `README.md` - informações do projeto
 - `.github/workflows/` - pipelines existentes
 
 ### Metadados:
-
 - Labels da Issue
 - Título da Issue
 - Histórico de edições
 - Arquivos modificados recentemente
 
 ### Configurações:
-
 - `configs/project.yaml` - padrões arquiteturais
 - `configs/agents.yaml` - templates de geração

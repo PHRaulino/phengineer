@@ -1,394 +1,358 @@
-# PHEngineer 🚀
+# PHEngineer - Fluxo Inicial e Análise de Contexto
 
-Automatização Inteligente de Geração de Código com IA para Workflows no GitHub
+## 🔄 Fluxo de Entrada e Validação
 
----
+### Visão Geral
 
-## 📌 Visão Geral
+O PHEngineer implementa um fluxo de validação em duas etapas para garantir alinhamento entre solicitação do usuário e especificação técnica antes de iniciar o desenvolvimento.
 
-O **PHEngineer** é um orquestrador desenvolvido em **Go** que integra **GitHub Issues** com **Inteligência Artificial (StackSpot AI)** para automatizar a geração de código, testes, documentação e validação seguindo conceitos como **Clean Architecture** e **Design Patterns**.
+### Fluxo Completo
 
-Através da abertura de Issues em um repositório, o sistema interpreta os pedidos dos usuários, executa múltiplos agentes de IA especializados e entrega um **Pull Request pronto para revisão** — tudo isso com execução paralela para máxima eficiência.
-
----
-
-## 🎯 Objetivos do Projeto
-
-- **Automatizar a geração de código** a partir de pedidos em linguagem natural ou estruturada
-- **Padronizar entregas** seguindo arquiteturas e práticas previamente definidas
-- **Reduzir o tempo de desenvolvimento** através de múltiplos agentes IA executando em paralelo
-- **Permitir fácil integração** com qualquer repositório GitHub através de GitHub Actions
-- **Introduzir Go** como linguagem backend na organização de forma prática e segura
-
----
-
-## 🏗️ Arquitetura
-
-### **Padrão Arquitetural**
-
-- **Arquitetura Hexagonal (Ports & Adapters)**
-  - Separação clara entre domínio e infraestrutura
-  - Facilita testes e manutenção
-  - Permite troca de implementações (HTTP ↔ MCP)
-
-### **Camadas da Aplicação**
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    GitHub Issues (Trigger)                  │
-└─────────────────────────┬───────────────────────────────────┘
-                         │
-┌─────────────────────────▼───────────────────────────────────┐
-│                   Interface Layer                           │
-│  ├─ GitHub Actions Handler                                  │
-│  ├─ Issue Parser                                           │
-│  └─ Response Formatter                                     │
-└─────────────────────────┬───────────────────────────────────┘
-                         │
-┌─────────────────────────▼───────────────────────────────────┐
-│                  Application Layer                          │
-│  ├─ Orchestrator (Core Business Logic)                     │
-│  ├─ Pipeline Manager                                       │
-│  ├─ Agent Coordinator                                      │
-│  └─ Result Consolidator                                    │
-└─────────────────────────┬───────────────────────────────────┘
-                         │
-┌─────────────────────────▼───────────────────────────────────┐
-│                    Domain Layer                             │
-│  ├─ Feature (Entity)                                       │
-│  ├─ Agent (Value Object)                                   │
-│  ├─ Pipeline (Aggregate)                                   │
-│  └─ Repository Interfaces (Ports)                          │
-└─────────────────────────┬───────────────────────────────────┘
-                         │
-┌─────────────────────────▼───────────────────────────────────┐
-│                 Infrastructure Layer                        │
-│  ├─ AI Provider Adapters (HTTP/MCP)                        │
-│  ├─ GitHub API Client                                      │
-│  ├─ File System Handler                                    │
-│  └─ Configuration Manager                                  │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+    A[Issue Criada/Editada] --> B[Análise de Contexto]
+    B --> C[Requirements Interpreter Agent]
+    C --> D[Geração de Especificação MD]
+    D --> E[Atualização da Issue]
+    E --> F{Aprovação do Usuário}
+    F -->|Aprovado| G[Pipeline de Desenvolvimento]
+    F -->|Correções| H[Iteração]
+    H --> C
 ```
 
----
+## 🧠 Requirements Interpreter Agent
 
-## ⚙️ Tecnologias Utilizadas
+### Objetivo
 
-### **Core Stack**
+Agente especializado em interpretar solicitações em linguagem natural e transformá-las em especificações técnicas estruturadas.
 
-- **Go (Golang)** — Linguagem principal do projeto
-- **Arquitetura Hexagonal** — Padrão arquitetural para desacoplamento
-- **GitHub API** — Integração para Issues, Pull Requests e repositórios
-- **GitHub Actions** — Automação e execução do pipeline CI/CD
-
-### **Comunicação com IA**
-
-- **StackSpot AI** — Geração de código, testes e documentação
-- **mark3labs/mcp-go** — Implementação MCP para prototipagem
-- **HTTP REST** — Fallback e compatibilidade
-- **YAML** — Formato de comunicação estruturada
-
-### **Ferramentas de Desenvolvimento**
-
-- **Goroutines + Channels** — Execução paralela dos agentes
-- **Testify** — Framework de testes
-- **Golangci-lint** — Análise estática de código
-
----
-
-## 🔗 Fluxo de Funcionamento
-
-### **1. Trigger & Interpretação**
+### Prompt do Agente
 
 ```
-GitHub Issue → Issue Parser → Interpretation Agent → YAML Structure
+Você é um especialista em análise de requisitos e arquitetura de software.
+
+Analise a solicitação do usuário e o contexto do projeto para gerar uma especificação técnica estruturada.
+
+**Sua tarefa:**
+1. Interpretar a solicitação em linguagem natural
+2. Definir arquitetura e padrões adequados
+3. Mapear arquivos que serão criados/modificados
+4. Estabelecer critérios de qualidade (DOR/DOD)
+5. Retornar JSON estruturado
+
+**Diretrizes:**
+- Use Clean Architecture como padrão base quando aplicável
+- Identifique o tipo de geração: feature, test, fix, doc, refactor
+- Seja específico nos caminhos de arquivos
+- Defina testes adequados para cada funcionalidade
+- Classifique complexidade: low, medium, high
+- **ARQUITETURA**: Adapte-se ao contexto do projeto (serverless, monolito, microserviços)
+- **STACK**: Inclua frameworks, linguagens, serviços cloud relevantes
+- **PADRÕES**: Aplique design patterns e princípios arquiteturais apropriados
+- **ARQUIVOS RELEVANTES**: Para cada mudança de arquivo, identifique arquivos relacionados que podem ser necessários como contexto (imports, interfaces, tipos, dependências)
+- **COMUNICAÇÃO**: Use apenas o campo "agent_feedback" para sugestões, avisos ou solicitações ao usuário
+
+**Contexto do projeto:**
+{project_context}
+
+**Estrutura atual:**
+{project_structure}
+
+**Solicitação do usuário:**
+{user_request}
+
+**Correções/Alterações (se houver):**
+{user_corrections}
+
+Analise a solicitação e gere a especificação técnica estruturada.
 ```
 
-### **2. Orquestração & Execução**
+### Configuração StackSpot
 
-```
-YAML → Pipeline Manager → Agent Coordinator → Parallel Execution
-                                          ├─ Code Generation Agent
-                                          ├─ Test Generation Agent
-                                          └─ Documentation Agent
-```
+- **LLM**: GPT-4o
+- **Structure Outputs**: Habilitado
+- **Schema**: JSON estruturado (ver seção abaixo)
 
-### **3. Consolidação & Entrega**
+## 📋 Schema JSON de Saída
 
-```
-Parallel Results → Result Consolidator → GitHub PR Creation
-```
-
----
-
-## 🧩 Estrutura de Pastas
-
-```
-ia-first/
-├── cmd/
-│   └── orchestrator/
-│       └── main.go                    # Ponto de entrada da aplicação
-├── internal/
-│   ├── domain/                        # Camada de Domínio
-│   │   ├── entities/
-│   │   │   ├── feature.go
-│   │   │   └── pipeline.go
-│   │   ├── valueobjects/
-│   │   │   └── agent.go
-│   │   └── repositories/              # Interfaces (Ports)
-│   │       ├── ai_provider.go
-│   │       └── github_client.go
-│   ├── application/                   # Camada de Aplicação
-│   │   ├── orchestrator.go
-│   │   ├── pipeline_manager.go
-│   │   ├── agent_coordinator.go
-│   │   └── result_consolidator.go
-│   ├── infrastructure/                # Camada de Infraestrutura
-│   │   ├── adapters/
-│   │   │   ├── stackspot_mcp.go      # Adapter MCP
-│   │   │   ├── stackspot_http.go     # Adapter HTTP
-│   │   │   └── github_api.go
-│   │   ├── config/
-│   │   │   └── config.go
-│   │   └── parsers/
-│   │       ├── yaml_parser.go
-│   │       └── issue_parser.go
-│   └── interfaces/                    # Camada de Interface
-│       ├── handlers/
-│       │   └── github_actions.go
-│       └── formatters/
-│           └── response_formatter.go
-├── pkg/                              # Packages públicos
-│   ├── github/
-│   │   └── client.go
-│   └── agents/
-│       ├── code_generator.go
-│       ├── test_generator.go
-│       └── doc_generator.go
-├── configs/
-│   ├── config.yaml
-│   └── agents.yaml
-├── scripts/
-│   └── setup.sh
-├── tests/
-│   ├── unit/
-│   ├── integration/
-│   └── fixtures/
-├── docs/
-│   ├── architecture.md
-│   ├── deployment.md
-│   └── contributing.md
-├── .github/
-│   └── workflows/
-│       └── ia-first.yml
-├── go.mod
-├── go.sum
-├── Dockerfile
-├── docker-compose.yml
-└── README.md
-```
-
----
-
-## 🔌 Arquitetura de Adaptadores
-
-### **AI Provider Interface (Port)**
-
-```go
-type AIProvider interface {
-    GenerateCode(ctx context.Context, req CodeGenerationRequest) (*CodeGenerationResponse, error)
-    GenerateTests(ctx context.Context, req TestGenerationRequest) (*TestGenerationResponse, error)
-    GenerateDocumentation(ctx context.Context, req DocumentationRequest) (*DocumentationResponse, error)
-    InterpretIssue(ctx context.Context, req IssueInterpretationRequest) (*IssueInterpretationResponse, error)
-}
-```
-
-### **Implementações (Adapters)**
-
-- **StackSpotMCPAdapter** — Usa MCP para comunicação
-- **StackSpotHTTPAdapter** — Usa HTTP REST para comunicação
-- **MockAIAdapter** — Para testes unitários
-
-### **Configuração Dinâmica**
-
-```yaml
-ai:
-  provider: "stackspot"
-  protocol: "mcp" # ou "http"
-  config:
-    endpoint: "..."
-    credentials: "..."
-```
-
----
-
-## 🔑 Agentes Especializados
-
-| Agente                      | Função                                       | Input               | Output        |
-| --------------------------- | -------------------------------------------- | ------------------- | ------------- |
-| **Issue Interpreter**       | Interpreta descrição e gera YAML estruturado | Issue Description   | YAML Config   |
-| **Code Generator**          | Produz código-fonte seguindo padrões         | YAML + Context      | Source Code   |
-| **Test Generator**          | Cria testes unitários/integração             | Code + Requirements | Test Files    |
-| **Documentation Generator** | Produz documentação técnica                  | Code + Context      | Documentation |
-
----
-
-## 📝 Exemplo de YAML Estruturado
-
-```yaml
-feature:
-  name: "Adicionar endpoint de criação de usuário"
-  description: "Endpoint REST para criação de usuários com validação"
-
-architecture:
-  pattern: "Clean Architecture"
-  language: "Go"
-  framework: "Gin"
-
-design_patterns:
-  - "Repository Pattern"
-  - "DTO Pattern"
-  - "Builder Pattern"
-
-requirements:
-  testing: true
-  documentation: true
-  validation: true
-
-agents:
-  - name: "code_generator"
-    priority: 1
-    config:
-      template: "rest_endpoint"
-      validation: true
-  - name: "test_generator"
-    priority: 2
-    dependencies: ["code_generator"]
-  - name: "doc_generator"
-    priority: 3
-    dependencies: ["code_generator"]
-```
-
----
-
-## 🚀 Estratégia de Implementação
-
-### **Fase 1: Foundation (2-3 semanas)**
-
-- [ ] Estrutura hexagonal básica
-- [ ] Interfaces e contratos
-- [ ] Configuração e parsers
-- [ ] Testes unitários base
-
-### **Fase 2: Core Features (3-4 semanas)**
-
-- [ ] Orquestrador principal
-- [ ] Pipeline manager
-- [ ] Agent coordinator
-- [ ] Adapter MCP (prototipagem)
-
-### **Fase 3: Integration (2-3 semanas)**
-
-- [ ] GitHub API integration
-- [ ] StackSpot AI integration
-- [ ] GitHub Actions workflow
-- [ ] Testes de integração
-
-### **Fase 4: Production Ready (1-2 semanas)**
-
-- [ ] Adapter HTTP (fallback)
-- [ ] Monitoring e logs
-- [ ] Documentação completa
-- [ ] Deploy e CI/CD
-
----
-
-## 🔄 Estratégia de Migração
-
-### **Flexibilidade de Protocolos**
-
-```go
-// Factory pattern para criação de adapters
-func NewAIProvider(config Config) AIProvider {
-    switch config.Protocol {
-    case "mcp":
-        return NewStackSpotMCPAdapter(config)
-    case "http":
-        return NewStackSpotHTTPAdapter(config)
-    default:
-        return NewMockAIAdapter()
+```json
+{
+  "type": "object",
+  "properties": {
+    "generation_type": {
+      "type": "string",
+      "enum": ["feature", "test", "fix", "doc", "refactor"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "architecture": {
+      "type": "object",
+      "properties": {
+        "pattern": { "type": "string" },
+        "stack": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "principles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "design_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["pattern", "stack", "principles", "design_patterns"]
+    },
+    "files_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file_path": { "type": "string" },
+          "change": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["new_file", "modify", "delete"]
+          },
+          "relevant_files": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["file_path", "change", "type", "relevant_files"]
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["unit", "integration", "e2e"]
+          },
+          "description": { "type": "string" }
+        },
+        "required": ["type", "description"]
+      }
+    },
+    "complexity": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "dor": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "dod": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "agent_feedback": {
+      "type": "object",
+      "properties": {
+        "suggestions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "missing_info": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["suggestions", "warnings", "missing_info"]
     }
+  },
+  "required": [
+    "generation_type",
+    "summary",
+    "architecture",
+    "files_changes",
+    "tests",
+    "complexity",
+    "dor",
+    "dod",
+    "agent_feedback"
+  ]
 }
 ```
 
-### **Plano de Migração**
+## 📄 Template de Issue
 
-1. **Atual**: `mark3labs/mcp-go` para prototipagem
-2. **Fallback**: HTTP adapter como backup
-3. **Futuro**: Migração para SDK oficial MCP quando disponível
-4. **Flexibilidade**: Troca de protocolo via configuração
+O sistema atualiza a Issue com especificação estruturada:
 
----
+```markdown
+# 🚀 Especificação Técnica
 
-## 🛡️ Segurança e Confiabilidade
+## 📝 Solicitação Original
 
-### **Validação de Entrada**
-
-- Sanitização de Issues do GitHub
-- Validação de YAML estruturado
-- Rate limiting para APIs
-
-### **Tratamento de Erros**
-
-- Circuit breaker para APIs externas
-- Retry com backoff exponencial
-- Fallback para HTTP em caso de falha MCP
-
-### **Monitoramento**
-
-- Métricas de performance
-- Logs estruturados
-- Health checks
+[Preserva prompt inicial do usuário]
 
 ---
 
-## 🧠 Próximos Passos
+## 📋 Especificação Técnica
 
-### **Sprint 1**
+### 🎯 Resumo
 
-1. [ ] Setup do projeto Go com estrutura hexagonal
-2. [ ] Implementação das interfaces core
-3. [ ] Parser de Issues e YAML
-4. [ ] Testes unitários básicos
+[Interpretação do sistema]
 
-### **Sprint 2**
+### 🔧 Tipo de Geração
 
-1. [ ] Orquestrador e pipeline manager
-2. [ ] Agent coordinator com goroutines
-3. [ ] Adapter MCP básico
-4. [ ] Mock do StackSpot AI
+[feature|test|fix|doc|refactor]
 
-### **Sprint 3**
+### 🏗️ Arquitetura
 
-1. [ ] Integração real com StackSpot AI
-2. [ ] GitHub API client
-3. [ ] Testes de integração
-4. [ ] Configuração dinâmica
+- **Pattern:** [Pattern arquitetural]
+- **Stack:** [Tecnologias utilizadas]
+- **Princípios:** [SOLID, DRY, etc.]
+- **Design Patterns:** [Patterns aplicados]
+
+### 📁 Mudanças nos Arquivos
+
+[Lista de arquivos criados/modificados com arquivos relevantes]
+
+### 🧪 Testes
+
+[Estratégia de testes definida]
+
+### ⏱️ Complexidade
+
+[low|medium|high]
 
 ---
 
-## 🎯 Benefícios Esperados
+## ✅ Definition of Ready (DOR)
 
-### **Técnicos**
+[Critérios de prontidão]
 
-- **Performance**: Execução paralela de agentes
-- **Escalabilidade**: Arquitetura modular e desacoplada
-- **Manutenibilidade**: Código limpo e testável
-- **Flexibilidade**: Múltiplos protocolos de comunicação
+## ✅ Definition of Done (DOD)
 
-### **Organizacionais**
+[Critérios de conclusão]
 
-- **Introdução do Go**: Showcase da linguagem
-- **Automação**: Redução de trabalho manual
-- **Padronização**: Código consistente
-- **Inovação**: Uso de tecnologias emergentes (MCP)
+---
+
+## ✏️ Correções/Alterações
+
+**Adicione suas correções aqui:**
+
+-
+
+---
+
+## ✅ Status de Aprovação
+
+**STATUS: PENDING**
+
+_Para aprovar, edite esta linha alterando PENDING para APPROVED_
+```
+
+## 🔧 Gestão de Contexto
+
+### Estratégia de Contexto Modular
+
+#### Ferramenta de Análise
+
+```bash
+# Primeira execução (completa)
+phengineer analyze --full
+
+# Execuções incrementais
+phengineer analyze --incremental
+```
+
+#### Estrutura de Contextos
+
+```
+.context/
+├── summary.md           # Índice de contextos disponíveis
+├── file-tree.md         # Árvore de arquivos atual
+├── file-contexts.md     # Contexto dos arquivos relevantes
+├── stack.md            # Tech stack específico do projeto
+├── architecture.md     # Organização e padrões do projeto
+└── dependencies.md     # Integrações específicas
+```
+
+#### Fluxo de Discovery (Futuro)
+
+1. **Step 1**: Análise do summary.md + Issue
+2. **Step 2**: Seleção de contextos necessários
+3. **Step 3**: Geração da especificação final
+
+### Knowledge Sources (Globais)
+
+Padrões reutilizáveis entre projetos:
+
+- **conventions.md** - Naming, error handling, logging
+- **security-policies.md** - Políticas de segurança
+- **performance-standards.md** - Requirements de performance
+- **company-patterns.md** - Padrões da empresa
+
+### Contexto Específico por Projeto
+
+Estado atual e específico:
+
+- **file-tree.md** - Árvore atual de arquivos
+- **file-contexts.md** - Arquivos relevantes mapeados
+- **stack.md** - Tech stack específico
+- **architecture.md** - Organização atual
+- **dependencies.md** - Integrações específicas
+
+## 🎛️ Mecanismo de Aprovação
+
+### Detecção Automática
+
+O sistema monitora edições na Issue detectando mudanças em:
+
+```markdown
+**STATUS: PENDING** → **STATUS: APPROVED**
+```
+
+### Estados Possíveis
+
+- **PENDING**: Aguardando validação do usuário
+- **APPROVED**: Aprovado para desenvolvimento
+- **REJECTED**: Rejeição com necessidade de correções
+
+### Iteração
+
+Usuário pode adicionar correções na seção específica e o agente reprocessa a solicitação com feedback.
+
+## 🚀 Próximos Passos
+
+### Pipeline de Desenvolvimento
+
+Após aprovação (STATUS: APPROVED):
+
+1. Seleção de pipeline baseado em `generation_type`
+2. Coordenação de agentes especializados
+3. Execução paralela quando possível
+4. Consolidação de resultados
+5. Criação de Pull Request
+
+### Agentes Especializados Futuros
+
+- **Code Generator**: Geração de código baseado em especificação
+- **Test Generator**: Criação de testes unitários e integração
+- **Documentation Generator**: Documentação técnica automática
+
+## 📊 Benefícios da Abordagem
+
+### Técnicos
+
+- **Validação precoce**: Alinhamento antes do desenvolvimento
+- **Contexto otimizado**: Informações relevantes sem overhead
+- **Modularidade**: Contextos específicos e reutilizáveis
+- **Escalabilidade**: Análise incremental para projetos grandes
+
+### Organizacionais
+
+- **Redução de retrabalho**: Especificação validada antes da execução
+- **Padronização**: Knowledge Sources garantem consistência
+- **Transparência**: Processo documentado e auditável
+- **Eficiência**: Contexto automatizado e sempre atualizado

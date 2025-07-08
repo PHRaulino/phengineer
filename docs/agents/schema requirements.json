@@ -12,10 +12,20 @@
       "type": "object",
       "properties": {
         "pattern": { "type": "string" },
-        "framework": { "type": "string" },
-        "database": { "type": "string" }
+        "stack": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "principles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "design_patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
       },
-      "required": ["pattern", "framework", "database"]
+      "required": ["pattern", "stack", "principles", "design_patterns"]
     },
     "files_changes": {
       "type": "array",
@@ -27,9 +37,13 @@
           "type": {
             "type": "string",
             "enum": ["new_file", "modify", "delete"]
+          },
+          "relevant_files": {
+            "type": "array",
+            "items": { "type": "string" }
           }
         },
-        "required": ["file_path", "change", "type"]
+        "required": ["file_path", "change", "type", "relevant_files"]
       }
     },
     "tests": {
