@@ -1,0 +1,13 @@
+project:
+  name: "meu-projeto"
+  type: "lambda"
+  language: python
+  version: 3.13
+  
+analysis:
+  file_limits:
+    max_file_size: "1MB"
+    max_files: 1000
+  
+contexts:
+  enabled: ["file-tree", "functions", "stack", "project-context"]
