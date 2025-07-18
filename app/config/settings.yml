@@ -1,12 +1,14 @@
 project:
+  name: "meu-projeto"
   type: "lambda"
   language:
     name: python
     version: 3.13
-
+  
 analysis:
-  files_include_path: ""
-  files_exclude_path: ""
   file_limits:
     max_file_size: "1MB"
     max_files: 1000
+  
+contexts:
+  enabled: ["file-tree", "functions", "stack", "project-context"]

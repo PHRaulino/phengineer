@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+__pycache__/
+.venv/
+venv/
+vendor/
+
+# Build artifacts  
+dist/
+build/
+.next/
+target/
+*.pyc
+
+# System files
+.git/
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary
+*.tmp
+*.cache
+.temp/
+coverage/

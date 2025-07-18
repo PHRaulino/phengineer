@@ -1,0 +1,36 @@
+# Source code (high priority)
+**/*.py
+**/*.js
+**/*.ts
+**/*.jsx
+**/*.tsx
+**/*.go
+**/*.rs
+**/*.java
+
+# Configuration files
+package.json
+requirements.txt
+pyproject.toml
+go.mod
+Cargo.toml
+pom.xml
+
+# Infrastructure
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+*.dockerfile
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+docs/**/*.md
+
+# Project config
+.gitignore
+tsconfig.json
+pytest.ini
+jest.config.js
+webpack.config.js
