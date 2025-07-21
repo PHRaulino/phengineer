@@ -9,7 +9,7 @@ import (
 
 // TestGetDefaultSettings testa as configurações padrão
 func TestGetDefaultSettings(t *testing.T) {
-	defaults := GetDefaultSettings()
+	defaults := GetDefaultSettings(".phengineer")
 
 	// Verifica se não é nil
 	if defaults == nil {
@@ -34,16 +34,16 @@ func TestGetDefaultSettings(t *testing.T) {
 	if defaults.Project.Language.Version == "" {
 		t.Error("Default language version should not be empty")
 	}
-	if defaults.Project.Language.Version != "1.21" {
-		t.Errorf("Expected default language version '1.21', got '%s'", defaults.Project.Language.Version)
+	if defaults.Project.Language.Version != "1.24" {
+		t.Errorf("Expected default language version '1.24', got '%s'", defaults.Project.Language.Version)
 	}
 
 	// Verifica valores da Analysis
 	if defaults.Analysis.FilesIncludePath == "" {
 		t.Error("Default files include path should not be empty")
 	}
-	if defaults.Analysis.FilesIncludePath != ".phengineer/.includeFiles" {
-		t.Errorf("Expected default include path '.phengineer/.includeFiles', got '%s'", defaults.Analysis.FilesIncludePath)
+	if defaults.Analysis.FilesIncludePath != ".phengineer/.analyzeFiles" {
+		t.Errorf("Expected default analyze path '.phengineer/.analyzeFiles', got '%s'", defaults.Analysis.FilesIncludePath)
 	}
 
 	if defaults.Analysis.FilesExcludePath == "" {
@@ -79,7 +79,7 @@ func TestSettingsValidate(t *testing.T) {
 	}{
 		{
 			name:     "Valid default settings",
-			settings: GetDefaultSettings(),
+			settings: GetDefaultSettings(".phengineer"),
 			wantErr:  false,
 		},
 		{
@@ -250,201 +250,6 @@ func TestSettingsValidate(t *testing.T) {
 	}
 }
 
-// TestSettingsMergeWithDefaults testa a mesclagem com valores padrão
-func TestSettingsMergeWithDefaults(t *testing.T) {
-	tests := []struct {
-		name     string
-		initial  *Settings
-		expected *Settings
-	}{
-		{
-			name:     "Completely empty settings",
-			initial:  &Settings{},
-			expected: GetDefaultSettings(),
-		},
-		{
-			name: "Partial project settings",
-			initial: &Settings{
-				Project: Project{
-					Type: "custom-type",
-					// Language será preenchido com defaults
-				},
-			},
-			expected: &Settings{
-				Project: Project{
-					Type: "custom-type",
-					Language: Language{
-						Name:    "go",
-						Version: "1.21",
-					},
-				},
-				Analysis: Analysis{
-					FilesIncludePath: ".phengineer/.includeFiles",
-					FilesExcludePath: ".phengineer/.ignoreFiles",
-					FileLimits: Limits{
-						MaxFileSize: "10MB",
-						MaxFiles:    1000,
-					},
-				},
-			},
-		},
-		{
-			name: "Custom language settings",
-			initial: &Settings{
-				Project: Project{
-					Type: "application",
-					Language: Language{
-						Name:    "rust",
-						Version: "1.70",
-					},
-				},
-			},
-			expected: &Settings{
-				Project: Project{
-					Type: "application",
-					Language: Language{
-						Name:    "rust",
-						Version: "1.70",
-					},
-				},
-				Analysis: Analysis{
-					FilesIncludePath: ".phengineer/.includeFiles",
-					FilesExcludePath: ".phengineer/.ignoreFiles",
-					FileLimits: Limits{
-						MaxFileSize: "10MB",
-						MaxFiles:    1000,
-					},
-				},
-			},
-		},
-		{
-			name: "Custom analysis settings",
-			initial: &Settings{
-				Analysis: Analysis{
-					FilesIncludePath: "custom/path/**",
-					FilesExcludePath: "custom/ignore/**",
-					FileLimits: Limits{
-						MaxFileSize: "20MB",
-						MaxFiles:    2000,
-					},
-				},
-			},
-			expected: &Settings{
-				Project: Project{
-					Type: "application",
-					Language: Language{
-						Name:    "go",
-						Version: "1.21",
-					},
-				},
-				Analysis: Analysis{
-					FilesIncludePath: "custom/path/**",
-					FilesExcludePath: "custom/ignore/**",
-					FileLimits: Limits{
-						MaxFileSize: "20MB",
-						MaxFiles:    2000,
-					},
-				},
-			},
-		},
-		{
-			name: "Partial limits settings",
-			initial: &Settings{
-				Analysis: Analysis{
-					FileLimits: Limits{
-						MaxFileSize: "50MB",
-						// MaxFiles será preenchido com default
-					},
-				},
-			},
-			expected: &Settings{
-				Project: Project{
-					Type: "application",
-					Language: Language{
-						Name:    "go",
-						Version: "1.21",
-					},
-				},
-				Analysis: Analysis{
-					FilesIncludePath: ".phengineer/.includeFiles",
-					FilesExcludePath: ".phengineer/.ignoreFiles",
-					FileLimits: Limits{
-						MaxFileSize: "50MB",
-						MaxFiles:    1000,
-					},
-				},
-			},
-		},
-		{
-			name: "Settings with some empty fields",
-			initial: &Settings{
-				Project: Project{
-					Type: "cli",
-					Language: Language{
-						Name:    "javascript",
-						Version: "", // será preenchido com default
-					},
-				},
-				Analysis: Analysis{
-					FilesIncludePath: "src/**/*.js",
-					FilesExcludePath: "", // será preenchido com default
-					FileLimits: Limits{
-						MaxFileSize: "", // será preenchido com default
-						MaxFiles:    500,
-					},
-				},
-			},
-			expected: &Settings{
-				Project: Project{
-					Type: "cli",
-					Language: Language{
-						Name:    "javascript",
-						Version: "1.21",
-					},
-				},
-				Analysis: Analysis{
-					FilesIncludePath: "src/**/*.js",
-					FilesExcludePath: ".phengineer/.ignoreFiles",
-					FileLimits: Limits{
-						MaxFileSize: "10MB",
-						MaxFiles:    500,
-					},
-				},
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// Cria uma cópia para não modificar o original
-			settings := *tt.initial
-			settings.MergeWithDefaults()
-
-			// Compara cada campo
-			if settings.Project.Type != tt.expected.Project.Type {
-				t.Errorf("Expected project type '%s', got '%s'", tt.expected.Project.Type, settings.Project.Type)
-			}
-			if settings.Project.Language.Name != tt.expected.Project.Language.Name {
-				t.Errorf("Expected language name '%s', got '%s'", tt.expected.Project.Language.Name, settings.Project.Language.Name)
-			}
-			if settings.Project.Language.Version != tt.expected.Project.Language.Version {
-				t.Errorf("Expected language version '%s', got '%s'", tt.expected.Project.Language.Version, settings.Project.Language.Version)
-			}
-			if settings.Analysis.FilesIncludePath != tt.expected.Analysis.FilesIncludePath {
-				t.Errorf("Expected include path '%s', got '%s'", tt.expected.Analysis.FilesIncludePath, settings.Analysis.FilesIncludePath)
-			}
-			if settings.Analysis.FilesExcludePath != tt.expected.Analysis.FilesExcludePath {
-				t.Errorf("Expected exclude path '%s', got '%s'", tt.expected.Analysis.FilesExcludePath, settings.Analysis.FilesExcludePath)
-			}
-			if settings.Analysis.FileLimits.MaxFileSize != tt.expected.Analysis.FileLimits.MaxFileSize {
-				t.Errorf("Expected max file size '%s', got '%s'", tt.expected.Analysis.FileLimits.MaxFileSize, settings.Analysis.FileLimits.MaxFileSize)
-			}
-			if settings.Analysis.FileLimits.MaxFiles != tt.expected.Analysis.FileLimits.MaxFiles {
-				t.Errorf("Expected max files %d, got %d", tt.expected.Analysis.FileLimits.MaxFiles, settings.Analysis.FileLimits.MaxFiles)
-			}
-		})
-	}
-}
 
 // TestSettingsYAMLSerialization testa serialização/deserialização YAML
 func TestSettingsYAMLSerialization(t *testing.T) {
@@ -540,7 +345,7 @@ func TestConfigStructs(t *testing.T) {
 	}
 
 	// Teste Config
-	settings := GetDefaultSettings()
+	settings := GetDefaultSettings(".phengineer")
 	config := &Config{
 		Settings:   settings,
 		Auto:       autoConfig,
@@ -560,7 +365,7 @@ func TestConfigStructs(t *testing.T) {
 
 // TestDefaultSettingsValidity testa se configurações padrão são válidas
 func TestDefaultSettingsValidity(t *testing.T) {
-	defaults := GetDefaultSettings()
+	defaults := GetDefaultSettings(".phengineer")
 
 	// Configurações padrão devem passar na validação
 	err := defaults.Validate()
@@ -575,75 +380,28 @@ func TestDefaultSettingsValidity(t *testing.T) {
 	}
 }
 
-// TestMergeWithDefaultsImmutability testa se MergeWithDefaults não modifica defaults
-func TestMergeWithDefaultsImmutability(t *testing.T) {
-	// Pega defaults originais
-	originalDefaults := GetDefaultSettings()
-	originalType := originalDefaults.Project.Type
-
-	// Cria settings que vão usar merge
-	settings := &Settings{
-		Project: Project{
-			Type: "custom",
-		},
-	}
-
-	// Faz merge
-	settings.MergeWithDefaults()
-
-	// Verifica se defaults originais não foram modificados
-	newDefaults := GetDefaultSettings()
-	if newDefaults.Project.Type != originalType {
-		t.Error("MergeWithDefaults should not modify the original defaults")
-	}
-
-	// Verifica se settings tem o valor customizado
-	if settings.Project.Type != "custom" {
-		t.Errorf("Expected custom type to be preserved, got '%s'", settings.Project.Type)
-	}
-}
-
 // Benchmarks
 
 // BenchmarkGetDefaultSettings testa performance da criação de defaults
 func BenchmarkGetDefaultSettings(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		GetDefaultSettings()
+		GetDefaultSettings(".phengineer")
 	}
 }
 
 // BenchmarkSettingsValidate testa performance da validação
 func BenchmarkSettingsValidate(b *testing.B) {
-	settings := GetDefaultSettings()
+	settings := GetDefaultSettings(".phengineer")
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		settings.Validate()
 	}
 }
 
-// BenchmarkMergeWithDefaults testa performance do merge
-func BenchmarkMergeWithDefaults(b *testing.B) {
-	_ = &Settings{
-		Project: Project{
-			Type: "custom",
-		},
-	}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		// Cria nova instância para cada iteração
-		testSettings := &Settings{
-			Project: Project{
-				Type: "custom",
-			},
-		}
-		testSettings.MergeWithDefaults()
-	}
-}
-
 // BenchmarkYAMLMarshal testa performance da serialização YAML
 func BenchmarkYAMLMarshal(b *testing.B) {
-	settings := GetDefaultSettings()
+	settings := GetDefaultSettings(".phengineer")
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		yaml.Marshal(settings)

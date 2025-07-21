@@ -1,6 +1,9 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+	"path/filepath"
+)
 
 // Settings representa a estrutura do arquivo settings.yml
 type Settings struct {
@@ -48,18 +51,18 @@ type Config struct {
 }
 
 // GetDefaultSettings retorna as configurações padrão
-func GetDefaultSettings() *Settings {
+func GetDefaultSettings(configFolderName string) *Settings {
 	return &Settings{
 		Project: Project{
 			Type: "application",
 			Language: Language{
 				Name:    "go",
-				Version: "1.21",
+				Version: "1.24",
 			},
 		},
 		Analysis: Analysis{
-			FilesIncludePath: ".phengineer/.includeFiles",
-			FilesExcludePath: ".phengineer/.ignoreFiles",
+			FilesIncludePath: filepath.Join(configFolderName, ".analyzeFiles"),
+			FilesExcludePath: filepath.Join(configFolderName, ".ignoreFiles"),
 			FileLimits: Limits{
 				MaxFileSize: "10MB",
 				MaxFiles:    1000,
@@ -97,34 +100,4 @@ func (s *Settings) Validate() error {
 	}
 
 	return nil
-}
-
-// MergeWithDefaults mescla as configurações com os valores padrão
-func (s *Settings) MergeWithDefaults() {
-	defaults := GetDefaultSettings()
-
-	// Project defaults
-	if s.Project.Type == "" {
-		s.Project.Type = defaults.Project.Type
-	}
-	if s.Project.Language.Name == "" {
-		s.Project.Language.Name = defaults.Project.Language.Name
-	}
-	if s.Project.Language.Version == "" {
-		s.Project.Language.Version = defaults.Project.Language.Version
-	}
-
-	// Analysis defaults
-	if s.Analysis.FilesIncludePath == "" {
-		s.Analysis.FilesIncludePath = defaults.Analysis.FilesIncludePath
-	}
-	if s.Analysis.FilesExcludePath == "" {
-		s.Analysis.FilesExcludePath = defaults.Analysis.FilesExcludePath
-	}
-	if s.Analysis.FileLimits.MaxFileSize == "" {
-		s.Analysis.FileLimits.MaxFileSize = defaults.Analysis.FileLimits.MaxFileSize
-	}
-	if s.Analysis.FileLimits.MaxFiles == 0 {
-		s.Analysis.FileLimits.MaxFiles = defaults.Analysis.FileLimits.MaxFiles
-	}
 }

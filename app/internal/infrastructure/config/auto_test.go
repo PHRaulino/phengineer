@@ -292,16 +292,6 @@ func hasGitRemotes() bool {
 	return strings.TrimSpace(string(output)) != ""
 }
 
-// getGitRootForTest obtém a raiz do Git para testes
-func getGitRootForTest() (string, error) {
-	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimSpace(string(output)), nil
-}
-
 // Benchmarks
 
 // BenchmarkExtractRepoNameFromURL testa performance da extração de nome

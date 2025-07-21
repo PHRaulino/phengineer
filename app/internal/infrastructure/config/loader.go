@@ -27,9 +27,6 @@ func LoadSettingsFromFile(filePath string) (*Settings, error) {
 		return nil, fmt.Errorf("failed to parse settings YAML: %w", err)
 	}
 
-	// Mescla com valores padrão
-	settings.MergeWithDefaults()
-
 	// Valida as configurações
 	if err := settings.Validate(); err != nil {
 		return nil, fmt.Errorf("settings validation failed: %w", err)
@@ -66,56 +63,21 @@ func SaveSettingsToFile(settings *Settings, filePath string) error {
 }
 
 // LoadOrCreateSettings carrega as configurações ou cria um arquivo padrão se não existir
-func LoadOrCreateSettings(filePath string) (*Settings, error) {
+func LoadOrCreateSettings(configFolderPath, configFolderName string) (*Settings, error) {
+
+	settingsPath := filepath.Join(configFolderPath, "settings.yml")
 	// Tenta carregar o arquivo existente
-	if _, err := os.Stat(filePath); err == nil {
-		return LoadSettingsFromFile(filePath)
+	if _, err := os.Stat(settingsPath); err == nil {
+		return LoadSettingsFromFile(settingsPath)
 	}
 
 	// Arquivo não existe, cria um padrão
-	fmt.Printf("Settings file not found, creating default: %s\n", filePath)
+	fmt.Printf("Settings file not found, creating default: %s\n", settingsPath)
 
-	defaultSettings := GetDefaultSettings()
-	if err := SaveSettingsToFile(defaultSettings, filePath); err != nil {
+	defaultSettings := GetDefaultSettings(configFolderName)
+	if err := SaveSettingsToFile(defaultSettings, settingsPath); err != nil {
 		return nil, fmt.Errorf("failed to create default settings: %w", err)
 	}
 
 	return defaultSettings, nil
-}
-
-// GetSettingsTemplate retorna um template do arquivo settings.yml
-func GetSettingsTemplate() string {
-	return `# Project Analysis Configuration
-
-project:
-  type: "application"  # application, library, cli, etc.
-  language:
-    name: "go"
-    version: "1.21"
-
-analysis:
-  files_include_path: "**/*"  # Glob pattern for files to include
-  files_exclude_path: "node_modules/**,vendor/**,.git/**,*.log"  # Glob pattern for files to exclude
-  file_limits:
-    max_file_size: "10MB"  # Maximum file size to analyze
-    max_files: 1000      # Maximum number of files to analyze
-`
-}
-
-// WriteSettingsTemplate escreve um template de exemplo
-func WriteSettingsTemplate(filePath string) error {
-	template := GetSettingsTemplate()
-
-	// Cria o diretório se não existir
-	dir := filepath.Dir(filePath)
-	if err := os.MkdirAll(dir, 0o755); err != nil {
-		return fmt.Errorf("failed to create config directory: %w", err)
-	}
-
-	// Escreve o template
-	if err := os.WriteFile(filePath, []byte(template), 0o644); err != nil {
-		return fmt.Errorf("failed to write settings template: %w", err)
-	}
-
-	return nil
 }

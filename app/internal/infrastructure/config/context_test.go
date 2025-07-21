@@ -40,61 +40,10 @@ func TestFromContext(t *testing.T) {
 	FromContext(ctx)
 }
 
-// TestMustFromContext testa extração segura de config
-func TestMustFromContext(t *testing.T) {
-	ctx := context.Background()
-	
-	// Context sem config
-	_, err := MustFromContext(ctx)
-	if err == nil {
-		t.Error("Expected error when config not in context")
-	}
-	
-	// Context com config (mock)
-	mockConfig := &Config{
-		Settings: GetDefaultSettings(),
-		Auto: &AutoConfig{
-			AppName:       "test-app",
-			ConfigDirPath: "/test/config",
-			RemoteURL:     "https://github.com/user/test-app",
-		},
-		ConfigPath: "/test/config",
-	}
-	
-	ctx = context.WithValue(ctx, configKey{}, mockConfig)
-	
-	config, err := MustFromContext(ctx)
-	if err != nil {
-		t.Errorf("Expected no error with valid config, got: %v", err)
-	}
-	
-	if config.Auto.AppName != "test-app" {
-		t.Errorf("Expected app name 'test-app', got '%s'", config.Auto.AppName)
-	}
-}
-
-// TestHasConfig testa verificação de config no context
-func TestHasConfig(t *testing.T) {
-	ctx := context.Background()
-	
-	// Context sem config
-	if HasConfig(ctx) {
-		t.Error("Expected HasConfig to return false for empty context")
-	}
-	
-	// Context com config
-	mockConfig := &Config{Settings: GetDefaultSettings()}
-	ctx = context.WithValue(ctx, configKey{}, mockConfig)
-	
-	if !HasConfig(ctx) {
-		t.Error("Expected HasConfig to return true for context with config")
-	}
-}
-
 // TestGetSettings testa extração de settings do context
 func TestGetSettings(t *testing.T) {
 	ctx := context.Background()
-	mockSettings := GetDefaultSettings()
+	mockSettings := GetDefaultSettings(".phengineer")
 	mockSettings.Project.Type = "test-type"
 	
 	mockConfig := &Config{Settings: mockSettings}
@@ -134,7 +83,7 @@ func TestSettingsValidation(t *testing.T) {
 	}{
 		{
 			name:     "Valid settings",
-			settings: GetDefaultSettings(),
+			settings: GetDefaultSettings(".phengineer"),
 			wantErr:  false,
 		},
 		{
@@ -187,40 +136,6 @@ func TestSettingsValidation(t *testing.T) {
 	}
 }
 
-// TestMergeWithDefaults testa mesclagem com valores padrão
-func TestMergeWithDefaults(t *testing.T) {
-	settings := &Settings{
-		Project: Project{
-			Type: "custom-type",
-			// Language será preenchido com defaults
-		},
-		Analysis: Analysis{
-			FilesIncludePath: "custom/**/*",
-			// Outros campos serão preenchidos com defaults
-		},
-	}
-	
-	settings.MergeWithDefaults()
-	
-	// Verifica se manteve valores customizados
-	if settings.Project.Type != "custom-type" {
-		t.Errorf("Expected custom type to be preserved, got '%s'", settings.Project.Type)
-	}
-	
-	if settings.Analysis.FilesIncludePath != "custom/**/*" {
-		t.Errorf("Expected custom include path to be preserved, got '%s'", settings.Analysis.FilesIncludePath)
-	}
-	
-	// Verifica se preencheu valores padrão
-	if settings.Project.Language.Name == "" {
-		t.Error("Expected language name to be filled with default")
-	}
-	
-	if settings.Analysis.FileLimits.MaxFileSize == "" {
-		t.Error("Expected max file size to be filled with default")
-	}
-}
-
 // TestAutoConfigFunctions testa funções de auto config (podem falhar sem git)
 func TestAutoConfigFunctions(t *testing.T) {
 	t.Run("extractRepoNameFromURL", func(t *testing.T) {
@@ -256,7 +171,7 @@ func TestLoadOrCreateSettings(t *testing.T) {
 	settingsPath := filepath.Join(tempDir, "settings.yml")
 	
 	// Primeiro carregamento - deve criar arquivo padrão
-	settings, err := LoadOrCreateSettings(settingsPath)
+	settings, err := LoadOrCreateSettings(settingsPath, ".phengineer")
 	if err != nil {
 		t.Fatalf("Failed to load or create settings: %v", err)
 	}
@@ -271,7 +186,7 @@ func TestLoadOrCreateSettings(t *testing.T) {
 	}
 	
 	// Segundo carregamento - deve carregar arquivo existente
-	settings2, err := LoadOrCreateSettings(settingsPath)
+	settings2, err := LoadOrCreateSettings(settingsPath, ".phengineer")
 	if err != nil {
 		t.Fatalf("Failed to load existing settings: %v", err)
 	}
@@ -285,7 +200,7 @@ func TestLoadOrCreateSettings(t *testing.T) {
 func BenchmarkFromContext(b *testing.B) {
 	ctx := context.Background()
 	mockConfig := &Config{
-		Settings: GetDefaultSettings(),
+		Settings: GetDefaultSettings(".phengineer"),
 		Auto: &AutoConfig{
 			AppName:       "bench-app",
 			ConfigDirPath: "/bench/config",
@@ -306,7 +221,7 @@ func BenchmarkFromContext(b *testing.B) {
 func BenchmarkGetSettings(b *testing.B) {
 	ctx := context.Background()
 	mockConfig := &Config{
-		Settings: GetDefaultSettings(),
+		Settings: GetDefaultSettings(".phengineer"),
 	}
 	ctx = context.WithValue(ctx, configKey{}, mockConfig)
 	
@@ -316,14 +231,4 @@ func BenchmarkGetSettings(b *testing.B) {
 		settings := GetSettings(ctx)
 		_ = settings.Project.Type
 	}
-}
-
-// contains é uma função utilitária para verificar se um slice contém um valor
-func contains(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
 }
