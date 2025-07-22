@@ -2,7 +2,8 @@ package config
 
 import (
 	"context"
-	"fmt"
+
+	"go.uber.org/zap"
 )
 
 // configKey é a chave para armazenar a config no context
@@ -15,18 +16,18 @@ func WithConfig(ctx context.Context, configFolderName string) (context.Context, 
 	results, err := validator.ValidateWithDetails()
 	// Mostra o status de cada requirement
 	if err != nil {
-		fmt.Printf("\n❌ Requirements validation failed: %v\n", err)
+		zap.L().Error("requirements validation failed", zap.Error(err))
 
 		for _, result := range results {
-			status := "✅"
+			status := "OK"
 			if !result.Passed {
-				status = "❌"
+				status = "ERROR"
 			}
-			fmt.Printf("  %s %s: %s\n", status, result.Name, result.Description)
-
-			if !result.Passed {
-				fmt.Printf("    Error: %s\n", result.ErrorMsg)
-			}
+			zap.L().Info("requirements",
+				zap.String("status", status),
+				zap.String("name", result.Name),
+				zap.String("description", result.Description),
+			)
 		}
 		return nil, err
 	}
@@ -34,7 +35,7 @@ func WithConfig(ctx context.Context, configFolderName string) (context.Context, 
 	// Coleta configurações automáticas
 	autoConfig, err := collectAutoConfig(configFolderName)
 	if err != nil {
-		fmt.Printf("❌ Failed to collect auto config: %v\n", err)
+		zap.L().Error("failed to collect auto config", zap.Error(err))
 		return nil, err
 	}
 
@@ -42,7 +43,7 @@ func WithConfig(ctx context.Context, configFolderName string) (context.Context, 
 
 	settings, err := LoadOrCreateSettings(autoConfig.ConfigDirPath, configFolderName)
 	if err != nil {
-		fmt.Printf("❌ Failed to load settings: %v\n", err)
+		zap.L().Error("failed to load settings", zap.Error(err))
 		return nil, err
 	}
 
@@ -61,7 +62,8 @@ func FromContext(ctx context.Context) *Config {
 	if config, ok := ctx.Value(configKey{}).(*Config); ok {
 		return config
 	}
-	panic("config not found in context - make sure to call config.WithConfig() first")
+	zap.L().Panic("config not found in context - make sure to call config.WithConfig() first")
+	return nil
 }
 
 // GetSettings extrai apenas as configurações do settings.yml do context
@@ -78,18 +80,16 @@ func GetAutoConfig(ctx context.Context) *AutoConfig {
 func PrintDiagnostics(ctx context.Context) {
 	config := FromContext(ctx)
 
-	fmt.Println("📋 Configuration Diagnostics")
-	fmt.Printf("  📱 App Name: %s\n", config.Auto.AppName)
-	fmt.Printf("  📁 Config Path: %s\n", config.ConfigPath)
-	fmt.Printf("  🌐 Remote URL: %s\n", config.Auto.RemoteURL)
+	zap.L().Debug("config", zap.String("key", "app_name"), zap.String("value", config.Auto.AppName))
+	zap.L().Debug("config", zap.String("key", "config_path"), zap.String("value", config.ConfigPath))
+	zap.L().Debug("config", zap.String("key", "remote_url"), zap.String("value", config.Auto.RemoteURL))
 
-	fmt.Println("\n⚙️  Project Settings:")
-	fmt.Printf("  Type: %s\n", config.Settings.Project.Type)
-	fmt.Printf("  Language: %s %s\n", config.Settings.Project.Language.Name, config.Settings.Project.Language.Version)
+	zap.L().Debug("config", zap.String("key", "project_type"), zap.String("value", config.Settings.Project.Type))
+	zap.L().Debug("config", zap.String("key", "language"), zap.String("value", config.Settings.Project.Language.Name))
+	zap.L().Debug("config", zap.String("key", "language_version"), zap.String("value", config.Settings.Project.Language.Version))
 
-	fmt.Println("\n📊 Analysis Settings:")
-	fmt.Printf("  Include: %s\n", config.Settings.Analysis.FilesIncludePath)
-	fmt.Printf("  Exclude: %s\n", config.Settings.Analysis.FilesExcludePath)
-	fmt.Printf("  Max File Size: %s\n", config.Settings.Analysis.FileLimits.MaxFileSize)
-	fmt.Printf("  Max Files: %d\n", config.Settings.Analysis.FileLimits.MaxFiles)
+	zap.L().Debug("config", zap.String("key", "analyse_files"), zap.String("value", config.Settings.Analysis.AnalysisFilesPath))
+	zap.L().Debug("config", zap.String("key", "ignore_files"), zap.String("value", config.Settings.Analysis.IgnoreFilesPath))
+	zap.L().Debug("config", zap.String("key", "max_file_size"), zap.String("value", config.Settings.Analysis.FileLimits.MaxFileSize))
+	zap.L().Debug("config", zap.String("key", "max_files"), zap.Int64("value", config.Settings.Analysis.FileLimits.MaxFiles))
 }

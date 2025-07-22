@@ -25,9 +25,9 @@ type Language struct {
 
 // Analysis representa as configurações de análise
 type Analysis struct {
-	FilesIncludePath string `yaml:"files_include_path"`
-	FilesExcludePath string `yaml:"files_exclude_path"`
-	FileLimits       Limits `yaml:"file_limits"`
+	AnalysisFilesPath string `yaml:"analysis_files_path"`
+	IgnoreFilesPath   string `yaml:"ignore_files_path"`
+	FileLimits        Limits `yaml:"file_limits"`
 }
 
 // Limits representa os limites de arquivos
@@ -61,8 +61,8 @@ func GetDefaultSettings(configFolderName string) *Settings {
 			},
 		},
 		Analysis: Analysis{
-			FilesIncludePath: filepath.Join(configFolderName, ".analyzeFiles"),
-			FilesExcludePath: filepath.Join(configFolderName, ".ignoreFiles"),
+			AnalysisFilesPath: filepath.Join(configFolderName, ".analyzeFiles"),
+			IgnoreFilesPath:   filepath.Join(configFolderName, ".ignoreFiles"),
 			FileLimits: Limits{
 				MaxFileSize: "10MB",
 				MaxFiles:    1000,
@@ -87,8 +87,8 @@ func (s *Settings) Validate() error {
 	}
 
 	// Valida Analysis
-	if s.Analysis.FilesIncludePath == "" {
-		return fmt.Errorf("analysis.files_include_path is required")
+	if s.Analysis.AnalysisFilesPath == "" {
+		return fmt.Errorf("analysis.analyze_files_path is required")
 	}
 
 	if s.Analysis.FileLimits.MaxFileSize == "" {

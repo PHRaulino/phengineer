@@ -15,11 +15,10 @@ func TestWithConfig(t *testing.T) {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}
 	defer os.RemoveAll(tempDir)
-	
+
 	// Pode falhar por não ter git real, mas testa a estrutura
 	ctx := context.Background()
 	_, err = WithConfig(ctx, "config")
-	
 	// O teste pode falhar por requirements, mas não deve panic
 	if err != nil {
 		t.Logf("WithConfig failed (expected in test environment): %v", err)
@@ -29,14 +28,14 @@ func TestWithConfig(t *testing.T) {
 // TestFromContext testa extração de config do context
 func TestFromContext(t *testing.T) {
 	ctx := context.Background()
-	
+
 	// Testa context sem config - deve dar panic
 	defer func() {
 		if r := recover(); r == nil {
 			t.Error("Expected panic when config not in context")
 		}
 	}()
-	
+
 	FromContext(ctx)
 }
 
@@ -45,10 +44,10 @@ func TestGetSettings(t *testing.T) {
 	ctx := context.Background()
 	mockSettings := GetDefaultSettings(".phengineer")
 	mockSettings.Project.Type = "test-type"
-	
+
 	mockConfig := &Config{Settings: mockSettings}
 	ctx = context.WithValue(ctx, configKey{}, mockConfig)
-	
+
 	settings := GetSettings(ctx)
 	if settings.Project.Type != "test-type" {
 		t.Errorf("Expected project type 'test-type', got '%s'", settings.Project.Type)
@@ -63,10 +62,10 @@ func TestGetAutoConfig(t *testing.T) {
 		ConfigDirPath: "/test/config",
 		RemoteURL:     "https://github.com/user/test-app",
 	}
-	
+
 	mockConfig := &Config{Auto: mockAuto}
 	ctx = context.WithValue(ctx, configKey{}, mockConfig)
-	
+
 	auto := GetAutoConfig(ctx)
 	if auto.AppName != "test-app" {
 		t.Errorf("Expected app name 'test-app', got '%s'", auto.AppName)
@@ -93,8 +92,8 @@ func TestSettingsValidation(t *testing.T) {
 					Language: Language{Name: "go", Version: "1.21"},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*",
-					FileLimits:       Limits{MaxFileSize: "10MB", MaxFiles: 1000},
+					AnalysisFilesPath: "**/*",
+					FileLimits:        Limits{MaxFileSize: "10MB", MaxFiles: 1000},
 				},
 			},
 			wantErr: true,
@@ -104,23 +103,23 @@ func TestSettingsValidation(t *testing.T) {
 			name: "Missing language name",
 			settings: &Settings{
 				Project: Project{
-					Type: "application",
+					Type:     "application",
 					Language: Language{Version: "1.21"},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*",
-					FileLimits:       Limits{MaxFileSize: "10MB", MaxFiles: 1000},
+					AnalysisFilesPath: "**/*",
+					FileLimits:        Limits{MaxFileSize: "10MB", MaxFiles: 1000},
 				},
 			},
 			wantErr: true,
 			errMsg:  "project.language.name is required",
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			err := tt.settings.Validate()
-			
+
 			if tt.wantErr {
 				if err == nil {
 					t.Error("Expected validation error, got nil")
@@ -150,7 +149,7 @@ func TestAutoConfigFunctions(t *testing.T) {
 			{"", ""},
 			{"invalid", "invalid"},
 		}
-		
+
 		for _, tt := range tests {
 			result := extractRepoNameFromURL(tt.url)
 			if result != tt.expected {
@@ -167,30 +166,30 @@ func TestLoadOrCreateSettings(t *testing.T) {
 		t.Fatalf("Failed to create temp directory: %v", err)
 	}
 	defer os.RemoveAll(tempDir)
-	
+
 	settingsPath := filepath.Join(tempDir, "settings.yml")
-	
+
 	// Primeiro carregamento - deve criar arquivo padrão
 	settings, err := LoadOrCreateSettings(settingsPath, ".phengineer")
 	if err != nil {
 		t.Fatalf("Failed to load or create settings: %v", err)
 	}
-	
+
 	if settings.Project.Type == "" {
 		t.Error("Settings should have default project type")
 	}
-	
+
 	// Verifica se arquivo foi criado
 	if _, err := os.Stat(settingsPath); os.IsNotExist(err) {
 		t.Error("Settings file should have been created")
 	}
-	
+
 	// Segundo carregamento - deve carregar arquivo existente
 	settings2, err := LoadOrCreateSettings(settingsPath, ".phengineer")
 	if err != nil {
 		t.Fatalf("Failed to load existing settings: %v", err)
 	}
-	
+
 	if settings2.Project.Type != settings.Project.Type {
 		t.Error("Loaded settings should match created settings")
 	}
@@ -208,9 +207,9 @@ func BenchmarkFromContext(b *testing.B) {
 		},
 	}
 	ctx = context.WithValue(ctx, configKey{}, mockConfig)
-	
+
 	b.ResetTimer()
-	
+
 	for i := 0; i < b.N; i++ {
 		config := FromContext(ctx)
 		_ = config.Auto.AppName
@@ -224,9 +223,9 @@ func BenchmarkGetSettings(b *testing.B) {
 		Settings: GetDefaultSettings(".phengineer"),
 	}
 	ctx = context.WithValue(ctx, configKey{}, mockConfig)
-	
+
 	b.ResetTimer()
-	
+
 	for i := 0; i < b.N; i++ {
 		settings := GetSettings(ctx)
 		_ = settings.Project.Type

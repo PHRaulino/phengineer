@@ -2,10 +2,10 @@ project:
     type: application
     language:
         name: go
-        version: "1.21"
+        version: "1.24"
 analysis:
-    files_include_path: app/.phengineer/.analyzeFiles
-    files_exclude_path: app/.phengineer/.ignoreFiles
+    analysis_files_path: app/.phengineer/.analysisFiles
+    ignore_files_path: app/.phengineer/.ignoreFiles
     file_limits:
         max_file_size: 10MB
         max_files: 1000

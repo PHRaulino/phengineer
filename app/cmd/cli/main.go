@@ -5,9 +5,12 @@ import (
 	"log"
 
 	"github.com/PHRaulino/phengineer/internal/infrastructure/config"
+	"github.com/PHRaulino/phengineer/internal/infrastructure/utils/logger"
 )
 
 func main() {
+	logger.SetupLogger()
+
 	ctx := context.Background()
 
 	// Adiciona config ao context com verbose

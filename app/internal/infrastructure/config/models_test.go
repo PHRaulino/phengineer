@@ -39,18 +39,18 @@ func TestGetDefaultSettings(t *testing.T) {
 	}
 
 	// Verifica valores da Analysis
-	if defaults.Analysis.FilesIncludePath == "" {
+	if defaults.Analysis.AnalysisFilesPath == "" {
 		t.Error("Default files include path should not be empty")
 	}
-	if defaults.Analysis.FilesIncludePath != ".phengineer/.analyzeFiles" {
-		t.Errorf("Expected default analyze path '.phengineer/.analyzeFiles', got '%s'", defaults.Analysis.FilesIncludePath)
+	if defaults.Analysis.AnalysisFilesPath != ".phengineer/.analyzeFiles" {
+		t.Errorf("Expected default analyze path '.phengineer/.analyzeFiles', got '%s'", defaults.Analysis.AnalysisFilesPath)
 	}
 
-	if defaults.Analysis.FilesExcludePath == "" {
+	if defaults.Analysis.IgnoreFilesPath == "" {
 		t.Error("Default files exclude path should not be empty")
 	}
-	if defaults.Analysis.FilesExcludePath != ".phengineer/.ignoreFiles" {
-		t.Errorf("Expected default exclude path '.phengineer/.ignoreFiles', got '%s'", defaults.Analysis.FilesExcludePath)
+	if defaults.Analysis.IgnoreFilesPath != ".phengineer/.ignoreFiles" {
+		t.Errorf("Expected default exclude path '.phengineer/.ignoreFiles', got '%s'", defaults.Analysis.IgnoreFilesPath)
 	}
 
 	// Verifica valores dos Limits
@@ -93,8 +93,8 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "src/**/*.py",
-					FilesExcludePath: "__pycache__/**",
+					AnalysisFilesPath: "src/**/*.py",
+					IgnoreFilesPath:   "__pycache__/**",
 					FileLimits: Limits{
 						MaxFileSize: "5MB",
 						MaxFiles:    500,
@@ -114,7 +114,7 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*.go",
+					AnalysisFilesPath: "**/*.go",
 					FileLimits: Limits{
 						MaxFileSize: "10MB",
 						MaxFiles:    1000,
@@ -135,7 +135,7 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*.go",
+					AnalysisFilesPath: "**/*.go",
 					FileLimits: Limits{
 						MaxFileSize: "10MB",
 						MaxFiles:    1000,
@@ -156,7 +156,7 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*.go",
+					AnalysisFilesPath: "**/*.go",
 					FileLimits: Limits{
 						MaxFileSize: "10MB",
 						MaxFiles:    1000,
@@ -177,7 +177,7 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "",
+					AnalysisFilesPath: "",
 					FileLimits: Limits{
 						MaxFileSize: "10MB",
 						MaxFiles:    1000,
@@ -198,7 +198,7 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*.go",
+					AnalysisFilesPath: "**/*.go",
 					FileLimits: Limits{
 						MaxFileSize: "",
 						MaxFiles:    1000,
@@ -219,7 +219,7 @@ func TestSettingsValidate(t *testing.T) {
 					},
 				},
 				Analysis: Analysis{
-					FilesIncludePath: "**/*.go",
+					AnalysisFilesPath: "**/*.go",
 					FileLimits: Limits{
 						MaxFileSize: "10MB",
 						MaxFiles:    0,
@@ -250,7 +250,6 @@ func TestSettingsValidate(t *testing.T) {
 	}
 }
 
-
 // TestSettingsYAMLSerialization testa serialização/deserialização YAML
 func TestSettingsYAMLSerialization(t *testing.T) {
 	// Configurações originais
@@ -263,8 +262,8 @@ func TestSettingsYAMLSerialization(t *testing.T) {
 			},
 		},
 		Analysis: Analysis{
-			FilesIncludePath: "src/**/*.rs",
-			FilesExcludePath: "target/**",
+			AnalysisFilesPath: "src/**/*.rs",
+			IgnoreFilesPath:   "target/**",
 			FileLimits: Limits{
 				MaxFileSize: "15MB",
 				MaxFiles:    1500,
@@ -317,8 +316,8 @@ func TestSettingsYAMLSerialization(t *testing.T) {
 	if deserialized.Project.Language.Version != original.Project.Language.Version {
 		t.Errorf("Expected language version '%s', got '%s'", original.Project.Language.Version, deserialized.Project.Language.Version)
 	}
-	if deserialized.Analysis.FilesIncludePath != original.Analysis.FilesIncludePath {
-		t.Errorf("Expected include path '%s', got '%s'", original.Analysis.FilesIncludePath, deserialized.Analysis.FilesIncludePath)
+	if deserialized.Analysis.AnalysisFilesPath != original.Analysis.AnalysisFilesPath {
+		t.Errorf("Expected include path '%s', got '%s'", original.Analysis.AnalysisFilesPath, deserialized.Analysis.AnalysisFilesPath)
 	}
 	if deserialized.Analysis.FileLimits.MaxFiles != original.Analysis.FileLimits.MaxFiles {
 		t.Errorf("Expected max files %d, got %d", original.Analysis.FileLimits.MaxFiles, deserialized.Analysis.FileLimits.MaxFiles)
