@@ -1,4 +1,4 @@
-# Source code (high priority)
+# [CODE] - Será processado como snippet
 **/*.py
 **/*.js
 **/*.ts
@@ -8,29 +8,27 @@
 **/*.rs
 **/*.java
 
-# Configuration files
+# [CONFIG] - Será processado como custom
 package.json
 requirements.txt
 pyproject.toml
 go.mod
 Cargo.toml
 pom.xml
-
-# Infrastructure
-Dockerfile
-docker-compose.yml
-docker-compose.yaml
-*.dockerfile
-
-# Documentation
-README.md
-CHANGELOG.md
-LICENSE
-docs/**/*.md
-
-# Project config
 .gitignore
 tsconfig.json
 pytest.ini
 jest.config.js
 webpack.config.js
+
+# [INFRASTRUCTURE] - Será processado como custom
+Dockerfile
+docker-compose.yml
+docker-compose.yaml
+*.dockerfile
+
+# [DOCS] - Será processado como custom
+README.md
+CHANGELOG.md
+LICENSE
+docs/**/*.md

@@ -26,7 +26,6 @@ type Language struct {
 // Analysis representa as configurações de análise
 type Analysis struct {
 	AnalysisFilesPath string `yaml:"analysis_files_path"`
-	IgnoreFilesPath   string `yaml:"ignore_files_path"`
 	FileLimits        Limits `yaml:"file_limits"`
 }
 
@@ -40,6 +39,7 @@ type Limits struct {
 type AutoConfig struct {
 	AppName       string // Nome do repositório
 	ConfigDirPath string // Caminho da pasta de configs
+	RootAppPath   string // Caminho da pasta de configs
 	RemoteURL     string // URL do remote sem .git
 }
 
@@ -62,7 +62,6 @@ func GetDefaultSettings(configFolderName string) *Settings {
 		},
 		Analysis: Analysis{
 			AnalysisFilesPath: filepath.Join(configFolderName, ".analyzeFiles"),
-			IgnoreFilesPath:   filepath.Join(configFolderName, ".ignoreFiles"),
 			FileLimits: Limits{
 				MaxFileSize: "10MB",
 				MaxFiles:    1000,

@@ -46,13 +46,6 @@ func TestGetDefaultSettings(t *testing.T) {
 		t.Errorf("Expected default analyze path '.phengineer/.analyzeFiles', got '%s'", defaults.Analysis.AnalysisFilesPath)
 	}
 
-	if defaults.Analysis.IgnoreFilesPath == "" {
-		t.Error("Default files exclude path should not be empty")
-	}
-	if defaults.Analysis.IgnoreFilesPath != ".phengineer/.ignoreFiles" {
-		t.Errorf("Expected default exclude path '.phengineer/.ignoreFiles', got '%s'", defaults.Analysis.IgnoreFilesPath)
-	}
-
 	// Verifica valores dos Limits
 	if defaults.Analysis.FileLimits.MaxFileSize == "" {
 		t.Error("Default max file size should not be empty")
@@ -94,7 +87,6 @@ func TestSettingsValidate(t *testing.T) {
 				},
 				Analysis: Analysis{
 					AnalysisFilesPath: "src/**/*.py",
-					IgnoreFilesPath:   "__pycache__/**",
 					FileLimits: Limits{
 						MaxFileSize: "5MB",
 						MaxFiles:    500,
@@ -263,7 +255,6 @@ func TestSettingsYAMLSerialization(t *testing.T) {
 		},
 		Analysis: Analysis{
 			AnalysisFilesPath: "src/**/*.rs",
-			IgnoreFilesPath:   "target/**",
 			FileLimits: Limits{
 				MaxFileSize: "15MB",
 				MaxFiles:    1500,

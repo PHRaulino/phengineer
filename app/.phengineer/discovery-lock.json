@@ -1,0 +1,167 @@
+{
+  "last_discovery": {
+    "total_found": 26,
+    "total_filtered": 17,
+    "max_size_bytes": 10485760,
+    "timestamp": 1753157098,
+    "git_commit": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+    "files": [
+      {
+        "name": "README.md",
+        "path": ".",
+        "size": 8821,
+        "type": "markdown",
+        "pattern_type": "custom",
+        "commit_hash": "",
+        "mod_time": 1752725498
+      },
+      {
+        "name": "main.go",
+        "path": "cmd/cli",
+        "size": 2858,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753156268
+      },
+      {
+        "name": "go.mod",
+        "path": ".",
+        "size": 192,
+        "type": "other",
+        "pattern_type": "custom",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753149417
+      },
+      {
+        "name": "models.go",
+        "path": "internal/domain/discovery",
+        "size": 2071,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753156986
+      },
+      {
+        "name": "repository.go",
+        "path": "internal/domain/discovery",
+        "size": 119,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753152255
+      },
+      {
+        "name": "service.go",
+        "path": "internal/domain/discovery",
+        "size": 12851,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753157043
+      },
+      {
+        "name": "auto.go",
+        "path": "internal/infrastructure/config",
+        "size": 3390,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "72dea929f53f4a0ca38fd0eeca6913d37af5316a",
+        "mod_time": 1753153869
+      },
+      {
+        "name": "auto_test.go",
+        "path": "internal/infrastructure/config",
+        "size": 10053,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7e180e02f22c987bc9ae18bb554b7a97160b696c",
+        "mod_time": 1753064778
+      },
+      {
+        "name": "context.go",
+        "path": "internal/infrastructure/config",
+        "size": 3391,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753155134
+      },
+      {
+        "name": "context_test.go",
+        "path": "internal/infrastructure/config",
+        "size": 6084,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753151656
+      },
+      {
+        "name": "loader.go",
+        "path": "internal/infrastructure/config",
+        "size": 2381,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7e180e02f22c987bc9ae18bb554b7a97160b696c",
+        "mod_time": 1753065143
+      },
+      {
+        "name": "loader_test.go",
+        "path": "internal/infrastructure/config",
+        "size": 5658,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753155132
+      },
+      {
+        "name": "models.go",
+        "path": "internal/infrastructure/config",
+        "size": 2476,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753155106
+      },
+      {
+        "name": "models_test.go",
+        "path": "internal/infrastructure/config",
+        "size": 10398,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753155128
+      },
+      {
+        "name": "requirements.go",
+        "path": "internal/infrastructure/config",
+        "size": 5883,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "72dea929f53f4a0ca38fd0eeca6913d37af5316a",
+        "mod_time": 1752809430
+      },
+      {
+        "name": "requirements_test.go",
+        "path": "internal/infrastructure/config",
+        "size": 11334,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "72dea929f53f4a0ca38fd0eeca6913d37af5316a",
+        "mod_time": 1752798487
+      },
+      {
+        "name": "logger.go",
+        "path": "internal/infrastructure/utils/logger",
+        "size": 1399,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "mod_time": 1753150758
+      }
+    ],
+    "oversized_files": []
+  },
+  "created_at": 1753156444,
+  "updated_at": 1753157098
+}

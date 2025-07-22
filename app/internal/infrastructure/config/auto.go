@@ -25,6 +25,13 @@ func collectAutoConfig(configFolderName string) (*AutoConfig, error) {
 	}
 	auto.ConfigDirPath = configDirPath
 
+	// Coleta caminho da pasta de config
+	rootAppPath, err := getRootPath(configFolderName)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get config dir path: %w", err)
+	}
+	auto.RootAppPath = rootAppPath
+
 	// Coleta URL do remote
 	remoteURL, err := getRemoteURL()
 	if err != nil {
@@ -82,6 +89,19 @@ func getConfigDirPath(configFolderName string) (string, error) {
 
 	gitRoot := strings.TrimSpace(string(output))
 	return filepath.Join(gitRoot, configFolderName), nil
+}
+
+// getConfigDirPath obtém o caminho completo da pasta de configuração
+func getRootPath(configFolderName string) (string, error) {
+	cmd := exec.Command("git", "rev-parse", "--show-toplevel")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("failed to get git root: %v", err)
+	}
+
+	gitRoot := strings.TrimSpace(string(output))
+	fullPath := filepath.Join(gitRoot, configFolderName)
+	return filepath.Dir(fullPath), nil
 }
 
 // getRemoteURL obtém a URL do remote origin sem .git

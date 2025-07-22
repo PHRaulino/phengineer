@@ -102,7 +102,6 @@ func TestSaveSettingsToFile(t *testing.T) {
 			},
 			Analysis: Analysis{
 				AnalysisFilesPath: "src/**/*.rs",
-				IgnoreFilesPath:   "target/**",
 				FileLimits: Limits{
 					MaxFileSize: "20MB",
 					MaxFiles:    2000,

@@ -83,13 +83,13 @@ func PrintDiagnostics(ctx context.Context) {
 	zap.L().Debug("config", zap.String("key", "app_name"), zap.String("value", config.Auto.AppName))
 	zap.L().Debug("config", zap.String("key", "config_path"), zap.String("value", config.ConfigPath))
 	zap.L().Debug("config", zap.String("key", "remote_url"), zap.String("value", config.Auto.RemoteURL))
+	zap.L().Debug("config", zap.String("key", "root_app_path"), zap.String("value", config.Auto.RootAppPath))
 
 	zap.L().Debug("config", zap.String("key", "project_type"), zap.String("value", config.Settings.Project.Type))
 	zap.L().Debug("config", zap.String("key", "language"), zap.String("value", config.Settings.Project.Language.Name))
 	zap.L().Debug("config", zap.String("key", "language_version"), zap.String("value", config.Settings.Project.Language.Version))
 
 	zap.L().Debug("config", zap.String("key", "analyse_files"), zap.String("value", config.Settings.Analysis.AnalysisFilesPath))
-	zap.L().Debug("config", zap.String("key", "ignore_files"), zap.String("value", config.Settings.Analysis.IgnoreFilesPath))
 	zap.L().Debug("config", zap.String("key", "max_file_size"), zap.String("value", config.Settings.Analysis.FileLimits.MaxFileSize))
 	zap.L().Debug("config", zap.String("key", "max_files"), zap.Int64("value", config.Settings.Analysis.FileLimits.MaxFiles))
 }
