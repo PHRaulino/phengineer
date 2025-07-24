@@ -65,19 +65,6 @@ func getRepositoryName() (string, error) {
 	return filepath.Base(gitRoot), nil
 }
 
-// extractRepoNameFromURL extrai o nome do repositório de uma URL
-func extractRepoNameFromURL(url string) string {
-	// Remove .git no final se existir
-	url = strings.TrimSuffix(url, ".git")
-
-	// Divide por / e pega o último elemento
-	parts := strings.Split(url, "/")
-	if len(parts) > 0 {
-		return parts[len(parts)-1]
-	}
-
-	return ""
-}
 
 // getConfigDirPath obtém o caminho completo da pasta de configuração
 func getConfigDirPath(configFolderName string) (string, error) {
