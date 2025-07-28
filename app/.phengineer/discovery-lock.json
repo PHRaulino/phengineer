@@ -1,10 +1,10 @@
 {
   "last_discovery": {
-    "total_found": 26,
-    "total_filtered": 17,
+    "total_found": 61,
+    "total_filtered": 51,
     "max_size_bytes": 10485760,
-    "timestamp": 1753157098,
-    "git_commit": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+    "timestamp": 1753588651,
+    "git_commit": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
     "files": [
       {
         "name": "README.md",
@@ -16,22 +16,31 @@
         "mod_time": 1752725498
       },
       {
-        "name": "main.go",
-        "path": "cmd/cli",
-        "size": 2858,
+        "name": "auth.go",
+        "path": "cmd/cli/commands",
+        "size": 338,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
-        "mod_time": 1753156268
+        "commit_hash": "105d7f5b58c77a0c81fb93e43e364b31747d495e",
+        "mod_time": 1753568204
+      },
+      {
+        "name": "main.go",
+        "path": "cmd/cli",
+        "size": 3856,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
+        "mod_time": 1753588461
       },
       {
         "name": "go.mod",
         "path": ".",
-        "size": 192,
+        "size": 3122,
         "type": "other",
         "pattern_type": "custom",
-        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
-        "mod_time": 1753149417
+        "commit_hash": "105d7f5b58c77a0c81fb93e43e364b31747d495e",
+        "mod_time": 1753573747
       },
       {
         "name": "models.go",
@@ -39,7 +48,7 @@
         "size": 2071,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753156986
       },
       {
@@ -48,7 +57,7 @@
         "size": 119,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753152255
       },
       {
@@ -57,17 +66,89 @@
         "size": 12851,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753157043
+      },
+      {
+        "name": "auth.go",
+        "path": "internal/infrastructure/auth",
+        "size": 1093,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753414257
+      },
+      {
+        "name": "constants.go",
+        "path": "internal/infrastructure/auth",
+        "size": 138,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753414116
+      },
+      {
+        "name": "keyring.go",
+        "path": "internal/infrastructure/auth/storage",
+        "size": 610,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753412761
+      },
+      {
+        "name": "memory.go",
+        "path": "internal/infrastructure/auth/storage",
+        "size": 804,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753411316
+      },
+      {
+        "name": "models.go",
+        "path": "internal/infrastructure/auth/storage",
+        "size": 232,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753411321
+      },
+      {
+        "name": "global.go",
+        "path": "internal/infrastructure/auth/token",
+        "size": 680,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753411851
+      },
+      {
+        "name": "models.go",
+        "path": "internal/infrastructure/auth/token",
+        "size": 973,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753414260
+      },
+      {
+        "name": "service.go",
+        "path": "internal/infrastructure/auth/token",
+        "size": 3442,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "f9332912d91f5ad1e19d514301a4243e2a3f8491",
+        "mod_time": 1753413904
       },
       {
         "name": "auto.go",
         "path": "internal/infrastructure/config",
-        "size": 3390,
+        "size": 3054,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "72dea929f53f4a0ca38fd0eeca6913d37af5316a",
-        "mod_time": 1753153869
+        "commit_hash": "3d7d27d60406f9b4c4abe861fff3d6d076264fe5",
+        "mod_time": 1753320653
       },
       {
         "name": "auto_test.go",
@@ -79,12 +160,21 @@
         "mod_time": 1753064778
       },
       {
+        "name": "config.go",
+        "path": "internal/infrastructure/config",
+        "size": 793,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "3d7d27d60406f9b4c4abe861fff3d6d076264fe5",
+        "mod_time": 1753320728
+      },
+      {
         "name": "context.go",
         "path": "internal/infrastructure/config",
         "size": 3391,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753155134
       },
       {
@@ -95,6 +185,15 @@
         "pattern_type": "snippet",
         "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
         "mod_time": 1753151656
+      },
+      {
+        "name": "git.go",
+        "path": "internal/infrastructure/config",
+        "size": 913,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "3d7d27d60406f9b4c4abe861fff3d6d076264fe5",
+        "mod_time": 1753320658
       },
       {
         "name": "loader.go",
@@ -111,7 +210,7 @@
         "size": 5658,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753155132
       },
       {
@@ -120,7 +219,7 @@
         "size": 2476,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753155106
       },
       {
@@ -129,7 +228,7 @@
         "size": 10398,
         "type": "go",
         "pattern_type": "snippet",
-        "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
+        "commit_hash": "651361ac5cb716953527a9402e365fd5dae1503b",
         "mod_time": 1753155128
       },
       {
@@ -158,10 +257,217 @@
         "pattern_type": "snippet",
         "commit_hash": "7cad947f493e2aa8ce603fc515873584eed0c1a4",
         "mod_time": 1753150758
+      },
+      {
+        "name": "app.go",
+        "path": "internal/presentation/tui",
+        "size": 1897,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588242
+      },
+      {
+        "name": "container.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 2099,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588151
+      },
+      {
+        "name": "footer.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 1738,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568741
+      },
+      {
+        "name": "header.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 1868,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568680
+      },
+      {
+        "name": "help.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 2961,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568680
+      },
+      {
+        "name": "logo.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 1918,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568680
+      },
+      {
+        "name": "notification.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 3879,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568680
+      },
+      {
+        "name": "spinner.go",
+        "path": "internal/presentation/tui/components/common",
+        "size": 1800,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568703
+      },
+      {
+        "name": "progress.go",
+        "path": "internal/presentation/tui/components/display",
+        "size": 1174,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568210
+      },
+      {
+        "name": "confirm.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 2646,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588158
+      },
+      {
+        "name": "field.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 2247,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753573836
+      },
+      {
+        "name": "form.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 7210,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753573830
+      },
+      {
+        "name": "input.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 3128,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753573830
+      },
+      {
+        "name": "password.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 3525,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588182
+      },
+      {
+        "name": "select.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 4583,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588163
+      },
+      {
+        "name": "textarea.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 3803,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588174
+      },
+      {
+        "name": "validation.go",
+        "path": "internal/presentation/tui/components/forms",
+        "size": 5070,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753569121
+      },
+      {
+        "name": "menu.go",
+        "path": "internal/presentation/tui/components/navigation",
+        "size": 1348,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568818
+      },
+      {
+        "name": "navigation.go",
+        "path": "internal/presentation/tui/messages",
+        "size": 215,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588207
+      },
+      {
+        "name": "base.go",
+        "path": "internal/presentation/tui/models",
+        "size": 952,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753568204
+      },
+      {
+        "name": "auth_setup.go",
+        "path": "internal/presentation/tui/screens",
+        "size": 3952,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588230
+      },
+      {
+        "name": "welcome.go",
+        "path": "internal/presentation/tui/screens",
+        "size": 3323,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588217
+      },
+      {
+        "name": "theme.go",
+        "path": "internal/presentation/tui/styles",
+        "size": 2797,
+        "type": "go",
+        "pattern_type": "snippet",
+        "commit_hash": "",
+        "mod_time": 1753588019
       }
     ],
     "oversized_files": []
   },
   "created_at": 1753156444,
-  "updated_at": 1753157098
+  "updated_at": 1753588651
 }

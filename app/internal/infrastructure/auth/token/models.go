@@ -7,6 +7,7 @@ type TokenGeneratorAlias string
 const (
 	TokenGenSTK TokenGeneratorAlias = "stackspot-api"
 	TokenGenHC  TokenGeneratorAlias = "hashicorp-vault"
+	TokenGenGH  TokenGeneratorAlias = "github-api"
 )
 
 // TokenScope define os escopos disponíveis

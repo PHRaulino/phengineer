@@ -1,8 +1,12 @@
 {
   "folders": [
     {
-      "name": "phengineer",
+      "name": "phengineer app",
       "path": "./"
+    },
+    {
+      "name": "phengineer",
+      "path": "../"
     }
   ],
   "settings": {}
